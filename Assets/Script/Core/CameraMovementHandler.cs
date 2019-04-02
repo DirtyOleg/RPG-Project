@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovementHandler : MonoBehaviour
+namespace RPG.Core
 {
-    [SerializeField] Transform player;
-    [SerializeField] Transform cameraOrigin;
-
-    private void LateUpdate() 
+    public class CameraMovementHandler : MonoBehaviour
     {
-        cameraOrigin.position = player.position;
+        [SerializeField] Transform player;
+        [SerializeField] Transform cameraOrigin;
+
+        private void LateUpdate()
+        {
+            cameraOrigin.position = player.position;
+        }
     }
+
 }

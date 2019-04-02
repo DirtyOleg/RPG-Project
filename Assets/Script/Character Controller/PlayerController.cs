@@ -9,14 +9,14 @@ namespace RPG.CharactorController
     [RequireComponent(typeof(MovementController))]
     public class PlayerController : MonoBehaviour
     {
+        public GameObject hitPointIndicator;
+
         private MovementController movementController;
-        private NavMeshAgent navMeshAgent;
         private Animator anim;
 
         private void Start()
         {
             movementController = GetComponent<MovementController>();
-            navMeshAgent = GetComponent<NavMeshAgent>();
             anim = GetComponent<Animator>();
         }
 
@@ -24,13 +24,13 @@ namespace RPG.CharactorController
         {
             if (Input.GetMouseButtonDown(0))
             {
-                MouseClick();
+                ClickToMove();
             }
 
             AnimationHandler();
         }
 
-        private void MouseClick()
+        private void ClickToMove()
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -38,14 +38,15 @@ namespace RPG.CharactorController
             if (Physics.Raycast(ray, out hitInfo, 100f))
             {
                 movementController.MoveToPosition(hitInfo.point);
+                Instantiate(hitPointIndicator, hitInfo.point, Quaternion.identity);
             }
         }
 
+        float forwardSpeed;
         private void AnimationHandler()
         {
-            Vector3 playerVelocity = navMeshAgent.velocity;
-            float forwardSpeed = playerVelocity.z;
-
+            Vector3 localVelocity = this.transform.InverseTransformDirection(movementController.AgentGlobalVelocity);
+            forwardSpeed = localVelocity.z;
             anim.SetFloat("forwardSpeed", forwardSpeed);
         }
     }
