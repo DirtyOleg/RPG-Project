@@ -6,47 +6,77 @@ using RPG.Core;
 
 namespace RPG.CharactorController
 {
-    [RequireComponent(typeof(MovementController))]
+    [RequireComponent(typeof(NavMeshAgent))]
     public class PlayerController : MonoBehaviour
     {
-        public GameObject hitPointIndicator;
+        [SerializeField] private GameObject hitPointIndicator = null;
 
-        private MovementController movementController;
+        private NavMeshAgent agent;
         private Animator anim;
+        private GameObject enemyTarget;
+        private Vector3 destinationTarget;
 
         private void Start()
         {
-            movementController = GetComponent<MovementController>();
+            InputEventRaiser.MouseClicked += PlayerActionSchduler;
+            agent = GetComponent<NavMeshAgent>();
             anim = GetComponent<Animator>();
         }
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                ClickToMove();
-            }
-
             AnimationHandler();
         }
 
-        private void ClickToMove()
+        private void PlayerActionSchduler(RaycastHit[] hitInfos)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit hitInfo;
-            if (Physics.Raycast(ray, out hitInfo, 100f))
+            //current version (04/02/2019) of game will only have two types of action, move or attack. for future development, the condition should adjust to meet need new requirements
+            foreach (RaycastHit hitInfo in hitInfos)
             {
-                movementController.MoveToPosition(hitInfo.point);
-                Instantiate(hitPointIndicator, hitInfo.point, Quaternion.identity);
+                if (hitInfo.collider.GetComponent<EnemyController>() != null)
+                {
+                    enemyTarget = hitInfo.collider.gameObject;
+                    break;
+                }
+                else
+                {
+                    destinationTarget = hitInfo.point;
+                }
+            }
+
+            if (enemyTarget != null)
+            {
+                AttackEnemy();
+                return;
+            }
+
+            if (destinationTarget != null)
+            {
+                MoveToPosition();
+                return;
             }
         }
 
-        float forwardSpeed;
+        private void MoveToPosition()
+        {
+            //Re-assign new destination location for Player
+            agent.destination = destinationTarget;
+
+            //Set Hit Point Indicator
+            hitPointIndicator.transform.position = destinationTarget;
+            hitPointIndicator.gameObject.SetActive(true);
+            
+        }
+
+        private void AttackEnemy()
+        {
+            enemyTarget = null;
+        }
+
         private void AnimationHandler()
         {
-            Vector3 localVelocity = this.transform.InverseTransformDirection(movementController.AgentGlobalVelocity);
-            forwardSpeed = localVelocity.z;
+            Vector3 localVelocity = this.transform.InverseTransformDirection(agent.velocity);
+            float forwardSpeed = localVelocity.z;
             anim.SetFloat("forwardSpeed", forwardSpeed);
         }
     }

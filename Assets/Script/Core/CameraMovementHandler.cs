@@ -6,8 +6,8 @@ namespace RPG.Core
 {
     public class CameraMovementHandler : MonoBehaviour
     {
-        [SerializeField] Transform player;
-        [SerializeField] Transform cameraOrigin;
+        [SerializeField] Transform player = null;
+        [SerializeField] Transform cameraOrigin = null;
 
         private void LateUpdate()
         {
