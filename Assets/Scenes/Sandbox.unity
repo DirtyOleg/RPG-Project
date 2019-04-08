@@ -545,7 +545,7 @@ GameObject:
   - component: {fileID: 846211554}
   m_Layer: 0
   m_Name: Mountain
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -560,7 +560,7 @@ TerrainCollider:
   m_Material: {fileID: 0}
   m_Enabled: 1
   m_TerrainData: {fileID: 15600000, guid: d99fc538daec3c545a2504913c141c11, type: 2}
-  m_EnableTreeColliders: 1
+  m_EnableTreeColliders: 0
 --- !u!218 &846211555
 Terrain:
   m_ObjectHideFlags: 0
@@ -934,11 +934,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: DestinationIndicator
       objectReference: {fileID: 0}
-    - target: {fileID: 4659974417207298251, guid: eadd78eb486b98345a5c79cc0c20e63b,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4659974417207298260, guid: eadd78eb486b98345a5c79cc0c20e63b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -947,7 +942,7 @@ PrefabInstance:
     - target: {fileID: 4659974417207298260, guid: eadd78eb486b98345a5c79cc0c20e63b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 4659974417207298260, guid: eadd78eb486b98345a5c79cc0c20e63b,
         type: 3}
@@ -992,6 +987,11 @@ PrefabInstance:
     - target: {fileID: 4659974417207298260, guid: eadd78eb486b98345a5c79cc0c20e63b,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659974417207298263, guid: eadd78eb486b98345a5c79cc0c20e63b,
+        type: 3}
+      propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1551,5 +1551,13 @@ PrefabInstance:
       propertyPath: hitPointIndicator
       value: 
       objectReference: {fileID: 1393007184}
+    - target: {fileID: 1795587527, guid: 598e3fbcec77a2745ab18815749bdb58, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1795587527, guid: 598e3fbcec77a2745ab18815749bdb58, type: 3}
+      propertyPath: m_Acceleration
+      value: 50
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 598e3fbcec77a2745ab18815749bdb58, type: 3}

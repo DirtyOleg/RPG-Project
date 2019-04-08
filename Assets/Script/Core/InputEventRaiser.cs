@@ -7,23 +7,47 @@ namespace RPG.Core
 {
     public class InputEventRaiser : MonoBehaviour
     {
-        public static event Action<RaycastHit[]> MouseClicked;
+        public static event Action<RaycastHit> TerrainHit;
+        public static event Action<RaycastHit> EnemyHit;
 
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetMouseButtonDown(0) && MouseClicked != null)
+            Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit[] _hitInfos = Physics.RaycastAll(_ray, 100f);
+
+            if (_hitInfos == null)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit[] hitInfos = Physics.RaycastAll(ray, 100f);
-                if (hitInfos != null)
-                {
-                    MouseClicked.Invoke(hitInfos);
-                }
+                Debug.Log("destination is not defined");
+                return;
             }
 
-            //TODO check if hit the roof of the building, what will happen
-            //TODO always raycast, so could use to highlight enemy or detect potential off map action
+            //Action based on Priority
+            foreach (RaycastHit hit in _hitInfos)
+            {
+                if (hit.collider.gameObject.tag == "Enemy")
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        print("enemy hit");
+                        EnemyHit.Invoke(hit);
+                        break;
+                    }
+                    else
+                    {
+                        //TODO add outline highlighter in here
+                    }
+
+                }
+                else if (hit.collider.gameObject.tag == "Terrain")
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        print("terrain hit");
+                        TerrainHit.Invoke(hit);
+                    }
+                }
+            }
         }
     }
 }
